@@ -45,3 +45,15 @@
 .eo_description {
 	margin-bottom: 15px;
 }
+
+.eo-align-right, .eo-align-right * {
+	text-align: right !important;
+}
+
+.eo-align-left, .eo-align-left * {
+	text-align: left !important;
+}
+
+.eo-align-center, .eo-align-center * {
+	text-align: center !important;
+}
