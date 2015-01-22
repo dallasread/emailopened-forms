@@ -58,6 +58,7 @@ function emailopened_options() {
 	$eouser = "";
 
 	$notice = "";
+	$error = "";
 	$key_update = 1;
 	
 	if (isset($_POST["emailopened"]) && isset($_POST["emailopened"]["token"])) {
@@ -70,7 +71,7 @@ function emailopened_options() {
 
 	if (strpos($page, "Access denied") !== false && strpos($page, "company_id") === false)
 	{
-		$notice = "<font color=\"#DF0101\">Please enter a valid <b>API Key</b>!</font>";
+		$error = "Please enter a valid <b>API Key</b>!";
 	}
 	else
 	{
@@ -87,8 +88,6 @@ function emailopened_options() {
 				{
 					if ($form["publish"] == 1)
 					{
-						//print_r($form);
-						//print_r("<br />****************<br />");
 						$thisform = array();
 						$thisform["name"] = $form["name"];
 						$thisform["id"] = $form["token"]."eo";
@@ -124,7 +123,9 @@ function emailopened_options() {
 			<img src="http://www.emailopened.com/wp-content/themes/eo2014B/images/weblogo2-01.png" alt="Email Opened">
 		</a>
 	</h1></div>';
-	if ($notice != "") {
+	if ($error != "") {
+		echo '<div style="background: #F0D4D2; color: maroon; border: 1px solid maroon; border-radius: 5px; padding: 0px 10px; margin-bottom: 20px; ">'.$error.'</div>';
+	} else if ($notice != "") {
 		echo '<div style="color: green; background: #C0F2C9; border: 1px solid green; border-radius: 5px; padding: 0px 10px; margin-bottom: 20px; ">'.$notice.'</div>';
 	}
 	echo '<h2>Welcome '.get_option('eouser').'!</h2>';
