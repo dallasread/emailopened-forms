@@ -138,7 +138,7 @@ function emailopened_options() {
 
 						<h1>&nbsp;&nbsp;
 		<a href="http://www.emailopened.com" target="_blank">
-			<img src="http://www.emailopened.com/wp-content/themes/emailopened/imgs/logo.png" alt="Email Opened">
+			<img src="http://www.emailopened.com/wp-content/themes/eo2014B/images/weblogo2-01.png" alt="Email Opened">
 		</a>
 	</h1></div>';
 	if ($notice != "") {
@@ -240,40 +240,40 @@ function emailopened_options() {
 	<div id="sign_up" class="section" style="margin-top: 0; display: none;">
 		<div class="form" style="padding: 10px;">
 			<div class="header dark_blue">
-					<h4>Sign-up with EmailOpened</h4>
-				</div>
-			<form accept-charset="UTF-8" action="https://app.emailopened.com/users" class="new_user" id="new_user" method="post" target="_blank">
-
-				<input name="utf8" type="hidden" value="&#x2713;" />
-				<input id="user_referring_url" name="user[referring_url]" type="hidden" value="http://www.emailopened.com/landing2" />
-				<input id="user_referral_token" name="user[referral_token]" type="hidden" value="landing2" />
-				<br />
+				<h4>Sign-up with EmailOpened</h4>
+			</div>
+			
+			<br>
+				
+			<form accept-charset="UTF-8" action="https://app.emailopened.com/companies" target="_blank" class="new_user" id="new_user" method="post" novalidate="novalidate">
+				<!-- <input name="authenticity_token" type="hidden" value="V+NVZUiXGK+DtNCEw9AMvJzdM0FR4iK/HCtxR0CiXzg="> -->
+				<input name="company[users_attributes][0][referring_url]" type="hidden" value="http://www.emailopened.com">
+				<input name="company[users_attributes][0][validated_signup]" type="hidden" value="false">
+				<input name="company[users_attributes][0][referral_token]" type="hidden" value="wp">
+				<input name="company[users_attributes][0][time_zone]" type="hidden" value="America/Halifax">
+				
 				<div class="field">
-					<label for="user_name">Name</label>
-					<input id="user_name" name="user[name]" type="text" />
+					<label for="name">Full Name:</label>
+					<input id="company_users_attributes_0_name" name="company[users_attributes][0][name]" size="20" type="text">
 				</div>
-
+				
 				<div class="field">
-					<label for="user_email">Email</label>
-					<input id="user_email" name="user[email]" type="text" />
+					<label for="email">Email:</label>
+					<input id="company_users_attributes_0_email" name="company[users_attributes][0][email]" size="20" type="text">
+					<input id="company_plan_id" name="company[plan_id]" type="hidden" value="6">
 				</div>
-
-				<div class="field">
-					<label for="user_password">Password</label>
-					<span style="font-size: 9px; color: #aaa; float: right; margin-top: -10px; ">8 characters long (include at least 1 uppercase, 1 number, and 1 symbol)</span>
-					<input id="user_password" name="user[password]" type="password" />
-				</div>
-
-				<div class="field">
-					<label for="password_confirmation">Please Confirm Your Password</label>
-					<input id="user_password_confirmation" name="user[password_confirmation]" type="password" />
-				</div>
-
+				
+				<h3 style="font-size: 11px; text-align: center; color: #999999; margin: auto; font-weight: normal; ">
+					By clicking the button below, you agree to Email Opened's 
+					<a href="http://www.emailopened.com/tos/" target="_blank" style="font-size: 11px;">Terms of Service</a> &amp; 
+					<a href="http://www.emailopened.com/privacy/" target="_blank" style="font-size: 11px;">Privacy Policy</a>.
+				</h3>
+				
 				<div class="center" style="margin-top: 20px; ">	
-					<input class="button-primary" name="commit" type="submit" value="Sign up" />
+					<input class="button-primary" name="commit" type="submit" value="Sign Up" />
 				</div>
-
-		  </form>
+			</form>
+			
 		</div>
 	</div>
 	<div id="sign_in" class="section" style="margin-top: 0; display: none;">
@@ -281,6 +281,7 @@ function emailopened_options() {
 			<div class="header dark_blue">
 					<h4>Sign-in to EmailOpened</h4>
 				</div>
+			
 			<form accept-charset="UTF-8" action="https://app.emailopened.com/sessions" class="new_session" id="new_session" method="post" novalidate="novalidate" target="_blank">
 				<br />
 				<div class="field">
