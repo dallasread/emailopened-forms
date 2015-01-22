@@ -10,30 +10,32 @@ function emailopened_menu() {
 	add_menu_page( 'EmailOpened Forms Options', 'EmailOpened', 'manage_options', 'emailopened', 'emailopened_options' );
 }
 function emailopened_tag() {
-	echo '<link rel="stylesheet" href="'.EO_FORMS_URL.'assets/css/emailopened_shared.css">';
-	echo '<script type="text/javascript" >
-		function signup()
-		{
-			console.log(document.getElementById("sign_in"));
-			document.getElementById("sign_in").style.display = "none";
-			document.getElementById("sign_up").style.display = "block";
-		}
-		function signin()
-		{
-			document.getElementById("sign_up").style.display = "none";
-			document.getElementById("sign_in").style.display = "block";
-		}
-		function eoinstructions()
-		{
-			document.getElementById("eoforms").style.display = "none";
-			document.getElementById("instructions").style.display = "block";
-		}
-		function eoforms()
-		{
-			document.getElementById("instructions").style.display = "none";
-			document.getElementById("eoforms").style.display = "block";
-		}
-		</script>';
+	if (isset($_REQUEST["page"]) && $_REQUEST["page"] == "emailopened") {
+		echo '<link rel="stylesheet" href="'.EO_FORMS_URL.'assets/css/emailopened_shared.css">';
+		echo '<script type="text/javascript" >
+			function signup()
+			{
+				console.log(document.getElementById("sign_in"));
+				document.getElementById("sign_in").style.display = "none";
+				document.getElementById("sign_up").style.display = "block";
+			}
+			function signin()
+			{
+				document.getElementById("sign_up").style.display = "none";
+				document.getElementById("sign_in").style.display = "block";
+			}
+			function eoinstructions()
+			{
+				document.getElementById("eoforms").style.display = "none";
+				document.getElementById("instructions").style.display = "block";
+			}
+			function eoforms()
+			{
+				document.getElementById("instructions").style.display = "none";
+				document.getElementById("eoforms").style.display = "block";
+			}
+			</script>';
+	}
 }
 
 function getPosts($url, $token) {
