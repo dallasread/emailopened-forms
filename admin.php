@@ -66,7 +66,7 @@ function emailopened_options() {
 		$key_update = 1;
 	}
 	
-	$page = getPosts(EO_PROTOCOL . EO_SUBDOMAIN . ".emailopened.com/api/forms", get_option( 'emailopened_token' ));
+	$page = getPosts(EO_URL . "/api/forms", get_option( 'emailopened_token' ));
 
 	if (strpos($page, "Access denied") !== false && strpos($page, "company_id") === false)
 	{
@@ -93,7 +93,7 @@ function emailopened_options() {
 						$thisform["name"] = $form["name"];
 						$thisform["id"] = $form["token"]."eo";
 						$thisform["embed"] = $form["embed"];
-						$thisform["eourl"] = EO_PROTOCOL . EO_SUBDOMAIN . ".emailopened.com/webforms/".$form["token"];
+						$thisform["eourl"] = EO_URL . "/webforms/".$form["token"];
 			
 						$eoforms[$thisform["id"]] = $thisform;
 						$looper++;
@@ -155,7 +155,7 @@ function emailopened_options() {
 						<h3>EmailOpened Side</h3><hr>
 						<div style="padding: 5px; border-style:solid; border-width:2px;">
 							<ol>
-								<li>Sign-up or Login to <a href="' . EO_PROTOCOL . EO_SUBDOMAIN . '.emailopened.com" target="_blank">' . EO_PROTOCOL . EO_SUBDOMAIN . '.EmailOpened.com</a></li>
+								<li>Sign-up or Login to <a href="' . EO_URL . '" target="_blank">EmailOpened.com</a></li>
 								<li>First goto <b>"My Account"</b> in the top navigation bar and scroll to the bottom of the page to find your <b>API Key</b></li>
 								<li>Copy that API Key to the above field and <b>"Submit"</b> to Link your EmailOpened to this site</li>
 							</ol>
@@ -228,7 +228,7 @@ function emailopened_options() {
 			
 			<br>
 				
-			<form accept-charset="UTF-8" action="<?php echo EO_PROTOCOL . EO_SUBDOMAIN; ?>.emailopened.com/companies" target="_blank" class="new_user" id="new_user" method="post" novalidate="novalidate">
+			<form accept-charset="UTF-8" action="<?php echo EO_URL; ?>/companies" target="_blank" class="new_user" id="new_user" method="post" novalidate="novalidate">
 				<!-- <input name="authenticity_token" type="hidden" value="V+NVZUiXGK+DtNCEw9AMvJzdM0FR4iK/HCtxR0CiXzg="> -->
 				<input name="company[users_attributes][0][referring_url]" type="hidden" value="http://www.emailopened.com">
 				<input name="company[users_attributes][0][validated_signup]" type="hidden" value="false">
@@ -265,7 +265,7 @@ function emailopened_options() {
 					<h4>Sign-in to EmailOpened</h4>
 				</div>
 			
-			<form accept-charset="UTF-8" action="<?php echo EO_PROTOCOL . EO_SUBDOMAIN; ?>.emailopened.com/sessions" class="new_session" id="new_session" method="post" novalidate="novalidate" target="_blank">
+			<form accept-charset="UTF-8" action="<?php echo EO_URL; ?>/sessions" class="new_session" id="new_session" method="post" novalidate="novalidate" target="_blank">
 				<br />
 				<div class="field">
 					<label for="email">Email</label>
