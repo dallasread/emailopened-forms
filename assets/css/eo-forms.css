@@ -1,0 +1,47 @@
+.eo-embedded-subscribe-form {
+	width: 100%;
+}
+
+.eo-embedded-subscribe-form .field label {
+	display: block;
+	margin: 0;
+	padding: 0px;
+}
+
+.eo-embedded-subscribe-form .field {
+	display: block;
+	margin: 0 0 20px 0;
+	padding: 0px;
+}
+
+.eo-embedded-subscribe-form input {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 100%;
+}
+
+.eo-embedded-subscribe-form .eo_response_block {
+	padding: 10px;
+	margin-top: 10px;	
+}
+
+.eo-embedded-subscribe-form .eo_success {
+	background: #c7eac7;
+	color: green;
+}
+
+.eo-embedded-subscribe-form .eo_error {
+	background: #F0D4D2;
+	color: maroon;
+}
+
+.eo-embedded-subscribe-form .eo_notice {
+	background: #ededce;
+	color: #807100;
+}
+
+.eo_description {
+	margin-bottom: 15px;
+}

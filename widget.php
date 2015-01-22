@@ -23,7 +23,7 @@ class EmailOpened_Widget extends WP_Widget {
 		echo $before_widget;
 		$title = empty($instance['title']) ? ' ' : apply_filters('widget_title', $instance['title']);
 		if ( !empty( $title ) ) { echo $before_title . $title . $after_title; }
-		if ( !empty( $instance['desc'] ) ) { echo $instance['desc']; }
+		if ( !empty( $instance['desc'] ) ) { echo "<p class=\"eo_description\">" . $instance['desc'] . "</p>"; }
 		$current_eoform = $instance['webform'];
 		
 		if ( ! empty( $current_eoform ) )
@@ -35,20 +35,21 @@ class EmailOpened_Widget extends WP_Widget {
 				if ($eoform['id'] == $current_eoform)
 				{
 					//Captcha
-					if ( !empty( $instance['captcha'] ) && $instance['captcha'] == "checked" ) {
-						preg_match('/<input type="submit" value="(.*)">/', $eoform["embed"], $button);
-						$eoform["embed"] = preg_replace('/<input type="submit" value="(.*)">/', '<div id="cap_text" style="padding: 5px;"><label for="button_replace">Human Check *</label><script type="text/javascript">DrawBotBoot()</script></div><div id="button_replace" style="padding: 5px;"><button type="button" onClick="javascript:ValidBotBoot(\''.$button[1].'\', this)">'.$instance['vali'].'</button></div>', $eoform["embed"]);
-					}
+					// if ( !empty( $instance['captcha'] ) && $instance['captcha'] == "checked" ) {
+					// 	preg_match('/<input type="submit" value="(.*)">/', $eoform["embed"], $button);
+					// 	$eoform["embed"] = preg_replace('/<input type="submit" value="(.*)">/', '<div id="cap_text" style="padding: 5px;"><label for="button_replace">Human Check *</label><script type="text/javascript">DrawBotBoot()</script></div><div id="button_replace" style="padding: 5px;"><button type="button" onClick="javascript:ValidBotBoot(\''.$button[1].'\', this)">'.$instance['vali'].'</button></div>', $eoform["embed"]);
+					// }
 					
-					// $eoform["embed"] = str_replace("<form", '<form target="'.$instance['redirect'].'"', $eoform["embed"]);
-					// $eoform["embed"] = str_replace("<label", '<label style="display: block;"', $eoform["embed"]);
-					// $eoform["embed"] = str_replace('<div class="field"', '<div style="padding: 5px;"', $eoform["embed"]);
+					$eoform["embed"] = str_replace('type="submit"', 'class="btn btn-primary" type="submit"', $eoform["embed"]);
+					$eoform["embed"] = str_replace('type="email"', 'type="text"', $eoform["embed"]);
+					$eoform["embed"] = str_replace("<form ", '<form class="eo-embedded-subscribe-form widget-content" ', $eoform["embed"]);
+					$eoform["embed"] = str_replace('</form>', '<div class="eo_response"></div></form>', $eoform["embed"]);
 					
 					$alignment = "";
 					$style = "";
 					if ( !empty( $instance['align'] ) ) { $alignment = 'text-align: '.$instance['align'].';'; }
 					if ( !empty( $instance['style'] ) ) { $style = 'class = "'.$instance['style'].'"'; }
-					$eoform["embed"] = str_replace('<form', '<div '.$style.' style="'.$alignment.'"><form', $eoform["embed"]); 
+
 					echo $eoform["embed"];
 				}
 					

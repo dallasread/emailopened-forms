@@ -10,7 +10,8 @@
 	// }
 	
 	function eo_public_scripts() {
-		wp_enqueue_script('eo-forms', EO_URL . '/js/eo-forms/v1.js', array( 'jquery' ));
+		wp_enqueue_script('eo-forms', plugins_url( '/emailopened-forms/assets/js/eo-forms.js' ), array( 'jquery' ));
+		wp_enqueue_style('eo-forms', plugins_url( '/emailopened-forms/assets/css/eo-forms.css' ));
 	}
 
 ?>
