@@ -108,7 +108,7 @@ class EmailOpened_Widget extends WP_Widget {
 		}
 		else
 			echo '<p class="center" style="margin-top: 20px; color: red; border: 1px solid red;">	
-				<b>You currently have no Forms.<br />Please check your API Key and build forms by loging into www.app.emailopened.com!</b>
+				<b>You currently have no Forms.<br />Please check your API Key and build forms at <a href="https://' . EO_SUBDOMAIN . '.emailopened.com/forms/new" target="_blank">' . EO_SUBDOMAIN . '.emailopened.com/forms</a>!</b>
 			</p>'; 
 		
 		echo '<p><label for="'.$this->get_field_name( 'align' ).'">'._e( 'Form Alignment:' ).'</label>&nbsp;&nbsp;<input type="radio" name='.$this->get_field_name( 'align' ).' value="left"';
