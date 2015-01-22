@@ -40,9 +40,9 @@ class EmailOpened_Widget extends WP_Widget {
 						$eoform["embed"] = preg_replace('/<input type="submit" value="(.*)">/', '<div id="cap_text" style="padding: 5px;"><label for="button_replace">Human Check *</label><script type="text/javascript">DrawBotBoot()</script></div><div id="button_replace" style="padding: 5px;"><button type="button" onClick="javascript:ValidBotBoot(\''.$button[1].'\', this)">'.$instance['vali'].'</button></div>', $eoform["embed"]);
 					}
 					
-					$eoform["embed"] = str_replace("<form", '<form target="'.$instance['redirect'].'"', $eoform["embed"]);
-					$eoform["embed"] = str_replace("<label", '<label style="display: block;"', $eoform["embed"]);
-					$eoform["embed"] = str_replace('<div class="field"', '<div style="padding: 5px;"', $eoform["embed"]);
+					// $eoform["embed"] = str_replace("<form", '<form target="'.$instance['redirect'].'"', $eoform["embed"]);
+					// $eoform["embed"] = str_replace("<label", '<label style="display: block;"', $eoform["embed"]);
+					// $eoform["embed"] = str_replace('<div class="field"', '<div style="padding: 5px;"', $eoform["embed"]);
 					
 					$alignment = "";
 					$style = "";
@@ -108,7 +108,7 @@ class EmailOpened_Widget extends WP_Widget {
 		}
 		else
 			echo '<p class="center" style="margin-top: 20px; color: red; border: 1px solid red;">	
-				<b>You currently have no Forms.<br />Please check your API Key and build forms at <a href="https://' . EO_SUBDOMAIN . '.emailopened.com/forms/new" target="_blank">' . EO_SUBDOMAIN . '.emailopened.com/forms</a>!</b>
+				<b>You currently have no Forms.<br />Please check your API Key and build forms at <a href="' . EO_PROTOCOL . EO_SUBDOMAIN . '.emailopened.com/forms/new" target="_blank">' . EO_SUBDOMAIN . '.emailopened.com/forms</a>!</b>
 			</p>'; 
 		
 		echo '<p><label for="'.$this->get_field_name( 'align' ).'">'._e( 'Form Alignment:' ).'</label>&nbsp;&nbsp;<input type="radio" name='.$this->get_field_name( 'align' ).' value="left"';

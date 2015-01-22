@@ -53,80 +53,63 @@ function emailopened_options() {
 	if ( !current_user_can( 'manage_options' ) )  {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
+	
 	$eoforms = array();
 	$eouser = "";
 
 	$notice = "";
 	$key_update = 1;
-
-	if ($_POST && $_POST["emailopened"]["token"] != "" && $_POST["emailopened"]["token"] != NULL )
-	{
-		if (get_option( 'emailopened_token' ) == $_POST["emailopened"]["token"] && get_option( 'emailopened_token' ) != "" && get_option( 'emailopened_token' ) != NULL) {
-			$notice = $notice . " Your API Key is <b>installed</b>! ";
-		}
-		else if (get_option( 'emailopened_token' ) != $_POST["emailopened"]["token"] && $_POST["emailopened"]["token"] != "" && $_POST["emailopened"]["token"] != NULL) {
-			update_option( 'emailopened_token', $_POST["emailopened"]["token"] );
-			$notice = $notice . " Your API Key is <b>installed</b>! ";
-			$key_update = 1;
-		}
-		else
-		{
-			$notice = $notice . "<font color=\"#DF0101\">Please enter a valid <b>API Key</b>!</font>";
-		}
-		
-	}
-	else if (get_option( 'emailopened_token' ) != "" && get_option( 'emailopened_token' ) != NULL)
-	{
+	
+	if (isset($_POST["emailopened"]) && isset($_POST["emailopened"]["token"])) {
+		update_option( 'emailopened_token', $_POST["emailopened"]["token"] );
 		$notice = $notice . " Your API Key is <b>installed</b>! ";
+		$key_update = 1;
 	}
 	
-	
-	if ($key_update == 1)
+	$page = getPosts(EO_PROTOCOL . EO_SUBDOMAIN . ".emailopened.com/api/forms", get_option( 'emailopened_token' ));
+
+	if (strpos($page, "Access denied") !== false && strpos($page, "company_id") === false)
 	{
-		$page = getPosts("https://" . EO_SUBDOMAIN . "emailopened.com/api/forms", get_option( 'emailopened_token' ));
-	
-		if (strpos($page, "Access denied") && strpos($page, "company_id") === false)
+		$notice = "<font color=\"#DF0101\">Please enter a valid <b>API Key</b>!</font>";
+	}
+	else
+	{
+		$notice = $notice . "Your token is <b>Valid</b>! ";
+		$page_info = json_decode($page, true);
+		
+		$counter = 0;
+		foreach($page_info as $k => $section)
 		{
-			$notice = "<font color=\"#DF0101\">Your token is <b>Invalid</b>!</font>";
-		}
-		else
-		{
-			$notice = $notice . "Your token is <b>Valid</b>! ";
-			$page_info = json_decode($page, true);
-			
-			$counter = 0;
-			foreach($page_info as $k => $section)
+			if ($counter == 0)
 			{
-				if ($counter == 0)
+				$looper = 0;
+				foreach($section as $l => $form)
 				{
-					$looper = 0;
-					foreach($section as $l => $form)
+					if ($form["publish"] == 1)
 					{
-						if ($form["publish"] == 1)
-						{
-							//print_r($form);
-							//print_r("<br />****************<br />");
-							$thisform = array();
-							$thisform["name"] = $form["name"];
-							$thisform["id"] = $form["token"]."eo";
-							$thisform["embed"] = $form["embed"];
-							$thisform["eourl"] = "https://" . EO_SUBDOMAIN . ".emailopened.com/webforms/".$form["token"];
-				
-							$eoforms[$thisform["id"]] = $thisform;
-							$looper++;
-						}
+						//print_r($form);
+						//print_r("<br />****************<br />");
+						$thisform = array();
+						$thisform["name"] = $form["name"];
+						$thisform["id"] = $form["token"]."eo";
+						$thisform["embed"] = $form["embed"];
+						$thisform["eourl"] = EO_PROTOCOL . EO_SUBDOMAIN . ".emailopened.com/webforms/".$form["token"];
+			
+						$eoforms[$thisform["id"]] = $thisform;
+						$looper++;
 					}
 				}
-				else
-				{
-					$eouser = $section["name"];
-				}
-				$counter++;
 			}
-			update_option( 'eoforms', $eoforms);
-			update_option( 'eouser', $eouser);
+			else
+			{
+				$eouser = $section["name"];
+			}
+			$counter++;
 		}
+		update_option( 'eoforms', $eoforms);
+		update_option( 'eouser', $eouser);
 	}
+	
 	echo '<script language="JavaScript">
     function myLocation() {
 	alert(document.frames[1].location);
@@ -172,7 +155,7 @@ function emailopened_options() {
 						<h3>EmailOpened Side</h3><hr>
 						<div style="padding: 5px; border-style:solid; border-width:2px;">
 							<ol>
-								<li>Sign-up or Login to <a href="http://' . EO_SUBDOMAIN . '.emailopened.com" target="_blank">http://' . EO_SUBDOMAIN . '.EmailOpened.com</a></li>
+								<li>Sign-up or Login to <a href="' . EO_PROTOCOL . EO_SUBDOMAIN . '.emailopened.com" target="_blank">' . EO_PROTOCOL . EO_SUBDOMAIN . '.EmailOpened.com</a></li>
 								<li>First goto <b>"My Account"</b> in the top navigation bar and scroll to the bottom of the page to find your <b>API Key</b></li>
 								<li>Copy that API Key to the above field and <b>"Submit"</b> to Link your EmailOpened to this site</li>
 							</ol>
@@ -245,7 +228,7 @@ function emailopened_options() {
 			
 			<br>
 				
-			<form accept-charset="UTF-8" action="https://<?php echo EO_SUBDOMAIN; ?>.emailopened.com/companies" target="_blank" class="new_user" id="new_user" method="post" novalidate="novalidate">
+			<form accept-charset="UTF-8" action="<?php echo EO_PROTOCOL . EO_SUBDOMAIN; ?>.emailopened.com/companies" target="_blank" class="new_user" id="new_user" method="post" novalidate="novalidate">
 				<!-- <input name="authenticity_token" type="hidden" value="V+NVZUiXGK+DtNCEw9AMvJzdM0FR4iK/HCtxR0CiXzg="> -->
 				<input name="company[users_attributes][0][referring_url]" type="hidden" value="http://www.emailopened.com">
 				<input name="company[users_attributes][0][validated_signup]" type="hidden" value="false">
@@ -282,7 +265,7 @@ function emailopened_options() {
 					<h4>Sign-in to EmailOpened</h4>
 				</div>
 			
-			<form accept-charset="UTF-8" action="https://<?php echo EO_SUBDOMAIN; ?>.emailopened.com/sessions" class="new_session" id="new_session" method="post" novalidate="novalidate" target="_blank">
+			<form accept-charset="UTF-8" action="<?php echo EO_PROTOCOL . EO_SUBDOMAIN; ?>.emailopened.com/sessions" class="new_session" id="new_session" method="post" novalidate="novalidate" target="_blank">
 				<br />
 				<div class="field">
 					<label for="email">Email</label>

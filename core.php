@@ -10,7 +10,7 @@
 	// }
 	
 	function eo_public_scripts() {
-		wp_enqueue_script('eo-forms', 'https://' . EO_SUBDOMAIN . '.emailopened.com/js/EO-forms.js', array( 'jquery' ));
+		wp_enqueue_script('eo-forms', EO_PROTOCOL . EO_SUBDOMAIN . '.emailopened.com/js/eo-forms/v1.js', array( 'jquery' ));
 	}
 
 ?>
