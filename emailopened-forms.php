@@ -10,8 +10,7 @@ Plugin URI: http://emailopened.com/emailopened-forms
 
 define('EO_FORMS_DIR', plugin_dir_path(__FILE__));
 define('EO_FORMS_URL', plugin_dir_url(__FILE__));
-define('EO_URL', 'http://localhost:3000');
-// define('EO_URL', 'http://app.emailopened.com');
+define('EO_URL', 'https://app.emailopened.com');
 
 
 function eo_forms_load(){
