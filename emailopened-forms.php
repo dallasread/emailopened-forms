@@ -10,8 +10,8 @@ Plugin URI: http://emailopened.com/emailopened-forms
 
 define('EO_FORMS_DIR', plugin_dir_path(__FILE__));
 define('EO_FORMS_URL', plugin_dir_url(__FILE__));
-// define('EO_URL', 'http://localhost:3000');
-define('EO_URL', 'https://app.emailopened.com');
+define('EO_URL', 'http://localhost:3000');
+// define('EO_URL', 'https://app.emailopened.com');
 
 
 function eo_forms_load(){
@@ -44,24 +44,41 @@ function eo_forms_uninstall(){
     //actions to perform once on plugin uninstall go here	    
 }
 
+function base64_url_encode($input)
+{
+    return strtr(base64_encode($input), '+/=', '-_,');
+}
+
 function eo_generate_captcha($form_id) {
+	$captcha_imgs_string = "";
 	$captcha_imgs = array("bird", "cat", "dog", "fire", "fish", "flower", "key", "scissors", "snail", "umbrella");
 	$random_img_keys = array_rand($captcha_imgs, 3);
+	$selected_key = rand(0, 2);
+	$api_key = get_option( 'emailopened_token' );
+	$iv = sha1($api_key);
+	$selected_word = "";
 	
-	$captcha = '<div class="captcha">
-		<input type="hidden" name="wp" value="1">
-		<input type="hidden name="verifier" value="@initial">
-		<input type="hidden name="verified" value="encrpytor.encrypt_and_sign(correct)">
-		<p>To verify that you are human, please select the <b>#{correct.capitalize}</b>.</p>
-		<div class="captcha_imgs">
-	';
-	
-	foreach ($random_img_keys as $key) {
-		$img_url = EO_URL . "/webforms/$form_id/imgs/" . $captcha_imgs[$key];
-		$captcha .= "$img_url" . "<br>" . "<br>";
+	foreach ($random_img_keys as $index => $key) {
+		$img_key = $captcha_imgs[$key];
+		$img_hash = base64_url_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $api_key, $img_key, MCRYPT_MODE_CBC, md5($api_key)));
+		$img_url = plugins_url( "/emailopened-forms/captcha/img.php?img_hash=$img_hash" );
+		$captcha_imgs_string .= "<img src=\"$img_url\">";
+
+		if ($index == $selected_key) {
+			$selected_word = $img_key;
+			$selected_hash = base64_url_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $api_key, "\x00" . $img_key, MCRYPT_MODE_CBC, md5($api_key)));
+		}
 	}
 		
-	$captcha .= '</div></div>';
+	$captcha = "<div class=\"captcha\">
+		<p>To verify that you are human, please select the <b>$selected_word</b>.</p>
+		<div class=\"captcha_imgs\">
+			$captcha_imgs_string
+			<input type=\"hidden\" name=\"verified\" value=\"$selected_hash\">
+			<input type=\"hidden\" name=\"verifier\" value=\"\">
+			<div class=\"eo_clear\"></div>
+		</div>
+	</div>";
 	
 	return $captcha;
 }
