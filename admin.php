@@ -61,12 +61,10 @@ function emailopened_options() {
 
 	$notice = "";
 	$error = "";
-	$key_update = 1;
 	
 	if (isset($_POST["emailopened"]) && isset($_POST["emailopened"]["token"])) {
 		update_option( 'emailopened_token', $_POST["emailopened"]["token"] );
 		$notice = $notice . " Your API Key is <b>installed</b>! ";
-		$key_update = 1;
 	}
 	
 	$page = getPosts(EO_URL . "/api/forms", get_option( 'emailopened_token' ));
