@@ -11,7 +11,8 @@ Plugin URI: http://emailopened.com/emailopened-forms
 define('EO_FORMS_DIR', plugin_dir_path(__FILE__));
 define('EO_FORMS_URL', plugin_dir_url(__FILE__));
 define('EO_URL', 'http://localhost:3000');
-// define('EO_URL', 'https://app.emailopened.com');
+define('EO_URL', 'https://app.emailopened.com');
+define('EO_URL', 'http://staging.emailopened.com');
 
 
 function eo_forms_load(){
@@ -49,7 +50,7 @@ function base64_url_encode($input)
     return strtr(base64_encode($input), '+/=', '-_,');
 }
 
-function eo_generate_captcha($form_id) {
+function eo_generate_captcha($instance, $form_id) {
 	$captcha_imgs_string = "";
 	$captcha_imgs = array("bird", "cat", "dog", "fire", "fish", "flower", "key", "scissors", "snail", "umbrella");
 	$random_img_keys = array_rand($captcha_imgs, 3);
@@ -67,18 +68,24 @@ function eo_generate_captcha($form_id) {
 		if ($index == $selected_key) {
 			$selected_word = $img_key;
 			$selected_hash = base64_url_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $api_key, "\x00" . $img_key, MCRYPT_MODE_CBC, md5($api_key)));
+			$selected_hash_again = base64_url_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $api_key, "\x00\x00" . $img_key, MCRYPT_MODE_CBC, md5($api_key)));
 		}
 	}
-		
-	$captcha = "<div class=\"captcha\">
-		<p>To verify that you are human, please select the <b>$selected_word</b>.</p>
-		<div class=\"captcha_imgs\">
-			$captcha_imgs_string
-			<input type=\"hidden\" name=\"verified\" value=\"$selected_hash\">
-			<input type=\"hidden\" name=\"verifier\" value=\"\">
-			<div class=\"eo_clear\"></div>
-		</div>
-	</div>";
+	
+	if ($instance["captcha"]) {
+		$captcha = "<div class=\"captcha\">
+			<p>To verify that you are human, please select the <b>$selected_word</b>.</p>
+			<div class=\"captcha_imgs\">
+				$captcha_imgs_string
+				<input type=\"hidden\" name=\"verified\" value=\"$selected_hash\">
+				<input type=\"hidden\" name=\"verifier\" value=\"\">
+				<div class=\"eo_clear\"></div>
+			</div>
+		</div>";
+	}	else {
+		$captcha = "<input type=\"hidden\" name=\"verified\" value=\"$selected_hash\">
+			<input type=\"hidden\" name=\"verifier\" value=\"$selected_hash_again\">";
+	}
 	
 	return $captcha;
 }

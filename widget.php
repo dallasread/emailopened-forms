@@ -24,7 +24,7 @@ class EmailOpened_Widget extends WP_Widget {
 		
 		if ( ! empty( $current_eoform ) )
 		{
-			echo $before_widget;
+			$before_widget = str_replace("class=\"", "class=\"$instance[style] ", $before_widget);
 			$title = empty($instance['title']) ? ' ' : apply_filters('widget_title', $instance['title']);
 			
 			if ( !empty( $title ) ) { echo $before_title . $title . $after_title; }
@@ -37,7 +37,7 @@ class EmailOpened_Widget extends WP_Widget {
 			{
 				if ($eoform['id'] == $current_eoform)
 				{
-					$captcha = $instance['captcha'] ? eo_generate_captcha( $eoform["id"] ) : "";
+					$captcha = eo_generate_captcha( $instance, $eoform["id"] );
 					$eoform["embed"] = str_replace('type="email"', 'type="text"', $eoform["embed"]);
 					$eoform["embed"] = str_replace("<form ", "<form class=\"eo-embedded-subscribe-form widget-content eo-align-$align\" ", $eoform["embed"]);
 					$eoform["embed"] = str_replace('</form>', '<div class="eo_response"></div></form>', $eoform["embed"]);
@@ -45,7 +45,7 @@ class EmailOpened_Widget extends WP_Widget {
 				}
 			}
 			
-			echo $eoform["embed"] . $after_widget;
+			echo $before_widget . $eoform["embed"] . $after_widget;
 		}
 	}
 
