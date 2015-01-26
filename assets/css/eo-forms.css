@@ -57,3 +57,34 @@
 .eo-align-center, .eo-align-center * {
 	text-align: center !important;
 }
+
+.eo-embedded-subscribe-form .captcha_imgs {
+	width: 100%;
+	text-align: center;
+	margin-bottom: 15px;
+}
+
+.eo-embedded-subscribe-form .captcha_imgs img {
+	border: 5px solid transparent;
+	border-radius: 100px;
+	padding: 1%;
+	width: 50px;
+	max-width: 20%;
+	margin: 0 1%;
+	cursor: pointer;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=50);
+	opacity: 0.5;
+	display: inline-block;
+}
+
+.eo-embedded-subscribe-form .captcha_imgs img.selected {
+	border-color: #012C4C;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	filter: alpha(opacity=100);
+	opacity: 1.0;
+}
+
+.eo_clear {
+	clear: both;
+}
