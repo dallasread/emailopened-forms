@@ -8,12 +8,15 @@ Author URI: http://emailopened.com/
 Plugin URI: http://emailopened.com/emailopened-forms
 */
 
+// ini_set('display_startup_errors',1);
+// ini_set('display_errors',1);
+// error_reporting(-1);
+
 define('EO_FORMS_DIR', plugin_dir_path(__FILE__));
 define('EO_FORMS_URL', plugin_dir_url(__FILE__));
-define('EO_URL', 'http://localhost:3000');
-define('EO_URL', 'https://app.emailopened.com');
+// define('EO_URL', 'http://localhost:3000');
+// define('EO_URL', 'https://app.emailopened.com');
 define('EO_URL', 'http://staging.emailopened.com');
-
 
 function eo_forms_load(){
 		
@@ -55,20 +58,20 @@ function eo_generate_captcha($instance, $form_id) {
 	$captcha_imgs = array("bird", "cat", "dog", "fire", "fish", "flower", "key", "scissors", "snail", "umbrella");
 	$random_img_keys = array_rand($captcha_imgs, 3);
 	$selected_key = rand(0, 2);
-	$api_key = get_option( 'emailopened_token' );
-	$iv = sha1($api_key);
+	$api_key = substr(get_option( 'emailopened_token' ), 0, 32);
+	$iv = substr(md5($api_key), 0, 16);
 	$selected_word = "";
 	
 	foreach ($random_img_keys as $index => $key) {
 		$img_key = $captcha_imgs[$key];
-		$img_hash = base64_url_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $api_key, $img_key, MCRYPT_MODE_CBC, md5($api_key)));
+		$img_hash = base64_url_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $api_key, $img_key, MCRYPT_MODE_CBC, $iv));
 		$img_url = plugins_url( "/emailopened-forms/captcha/img.php?img_hash=$img_hash" );
 		$captcha_imgs_string .= "<img src=\"$img_url\">";
 
 		if ($index == $selected_key) {
 			$selected_word = $img_key;
-			$selected_hash = base64_url_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $api_key, "\x00" . $img_key, MCRYPT_MODE_CBC, md5($api_key)));
-			$selected_hash_again = base64_url_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $api_key, "\x00\x00" . $img_key, MCRYPT_MODE_CBC, md5($api_key)));
+			$selected_hash = base64_url_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $api_key, "\x00" . $img_key, MCRYPT_MODE_CBC, $iv));
+			$selected_hash_again = base64_url_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $api_key, "\x00\x00" . $img_key, MCRYPT_MODE_CBC, $iv));
 		}
 	}
 	

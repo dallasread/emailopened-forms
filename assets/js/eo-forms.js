@@ -13,8 +13,6 @@
 		return false;
 	});
 	
-	
-	
 	$(document).on("submit", ".eo-embedded-subscribe-form", function() {
 		var form = $(this);
 		var email = form.find("[name='contact[details][email-address]']");
@@ -30,7 +28,7 @@
         url: form.attr("action"),
         data: form.serialize() 
       }).done(function(data) {
-				if (data.indexOf("Your submission has been Received.") != -1) {
+				if (data.indexOf("confirm your submission") != -1) {
 					response.prependTo(form);
 					form.find('.field, input[type="submit"], .captcha').hide();
 					form.closest(".widget").find('.eo_description').hide();

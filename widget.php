@@ -38,14 +38,13 @@ class EmailOpened_Widget extends WP_Widget {
 				if ($eoform['id'] == $current_eoform)
 				{
 					$captcha = eo_generate_captcha( $instance, $eoform["id"] );
-					$eoform["embed"] = str_replace('type="email"', 'type="text"', $eoform["embed"]);
 					$eoform["embed"] = str_replace("<form ", "<form class=\"eo-embedded-subscribe-form widget-content eo-align-$align\" ", $eoform["embed"]);
+					$eoform["embed"] = str_replace('type="email"', 'type="text"', $eoform["embed"]);
 					$eoform["embed"] = str_replace('</form>', '<div class="eo_response"></div></form>', $eoform["embed"]);
 					$eoform["embed"] = str_replace('<input type="submit"', "$captcha<input type=\"submit\" class=\"btn btn-primary\" type=\"submit\"", $eoform["embed"]);
+					echo $before_widget . $eoform["embed"] . $after_widget;
 				}
 			}
-			
-			echo $before_widget . $eoform["embed"] . $after_widget;
 		}
 	}
 
