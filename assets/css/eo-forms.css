@@ -76,6 +76,7 @@
 	filter: alpha(opacity=50);
 	opacity: 0.5;
 	display: inline-block;
+	background: #fff;
 }
 
 .eo-embedded-subscribe-form .captcha_imgs img.selected {
